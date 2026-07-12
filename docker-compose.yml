@@ -1,0 +1,15 @@
+services:
+  backend:
+    build: .
+    container_name: pos-backend
+    ports:
+      - "5000:5000"
+    # Ambil MONGO_URI, PORT, JWT_SECRET, dll dari file .env (tidak di-bake ke image)
+    env_file:
+      - .env
+    # Bind mount: perubahan kode di host langsung ke-reload nodemon,
+    # tanpa menimpa node_modules milik container.
+    volumes:
+      - .:/app
+      - /app/node_modules
+    restart: unless-stopped
