@@ -1,7 +1,6 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 
-// 1) protect: verifikasi JWT, lampirkan req.user
 export const protect = async (req, res, next) => {
   try {
     let token;
@@ -26,7 +25,6 @@ export const protect = async (req, res, next) => {
   }
 };
 
-// 2) authorize: batasi endpoint ke role tertentu, mis. authorize('admin')
 export const authorize =
   (...roles) =>
   (req, res, next) => {
