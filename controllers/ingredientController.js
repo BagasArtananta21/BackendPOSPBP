@@ -6,9 +6,7 @@ export const createIngredients = async (req, res) => {
         ingredient_name,
         sku,
         unit,
-        current_stock,
         minimum_stock,
-        last_cost_per_unit,
     });
     res.json({ message: 'Bahan Baku berhasil ditambahkan', data: ingredients });
 };
@@ -46,10 +44,8 @@ export const updateIngredient = async (req, res) => {
     if (ingredient_name !== undefined) ingredient.ingredient_name = ingredient_name;
     if (sku !== undefined) ingredient.sku = sku;
     if (unit !== undefined) ingredient.unit = unit;
-    if (current_stock !== undefined) ingredient.current_stock = current_stock;
     if (minimum_stock !== undefined) ingredient.minimum_stock = minimum_stock;
-    if (last_cost_per_unit !== undefined) ingredient.last_cost_per_unit = last_cost_per_unit;
-
+    
     await ingredient.save();
     res.json({ message: 'Bahan Baku berhasil diperbarui', data: ingredient });
 }

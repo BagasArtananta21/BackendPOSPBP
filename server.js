@@ -8,6 +8,8 @@ import connectDB from './config/db.js';
 import { notFound, errorHandler } from './middleware/errorHandler.js';
 import authRoutes from './routes/authRoutes.js';
 import ingredientRoutes from './routes/ingredientRoutes.js';
+import supplierRoutes from './routes/supplierRoutes.js';
+import stockRoutes from './routes/stockRoutes.js';
 
 const app = express();
 
@@ -25,6 +27,8 @@ app.get('/api/health', (req, res) => {
 
 app.use('/api/auth', authRoutes);
 app.use('/api/ingredients', ingredientRoutes);
+app.use('/api/suppliers', supplierRoutes);
+app.use('/api/stocks', stockRoutes);
 app.use(notFound);
 app.use(errorHandler);
 
