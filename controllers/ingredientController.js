@@ -1,6 +1,6 @@
 import Ingredient from '../models/Ingredient.js';
 
-export const createIngredients = async (req, res) => {
+export const createIngredient = async (req, res) => {
     const {ingredient_name, sku, unit, current_stock, minimum_stock, last_cost_per_unit} = req.body;
     const ingredients = await Ingredient.create({
         ingredient_name,

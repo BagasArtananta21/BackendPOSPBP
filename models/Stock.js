@@ -1,6 +1,4 @@
 import mongoose from "mongoose";
-import Stock from "./Stock.js";
-import Ingredient from "./Ingredient.js";
 
 const stockSchema = new mongoose.Schema(
     {

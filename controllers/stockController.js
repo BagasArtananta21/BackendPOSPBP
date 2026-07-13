@@ -1,6 +1,6 @@
 import Stock from '../models/Stock.js';
-import Ingredient from '../models/Ingredient.js';
-import User from '../models/User.js';
+// import Ingredient from '../models/Ingredient.js';
+// import User from '../models/User.js';
 
 export const supplyIn = async (req, res) => {
     const { ingredient_id, supplier_id, quantity, total_price, batch_number } = req.body;

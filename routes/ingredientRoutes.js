@@ -1,7 +1,7 @@
 import express from "express";
 
 import {
-    createIngredients,
+    createIngredient,
     getIngredients,
     getIngredientById,
     updateIngredient,
@@ -13,7 +13,7 @@ const router = express.Router();
 
 router.use(protect, authorize('admin'));
 
-router.route('/').post(createIngredients).get(getIngredients);
+router.route('/').post(createIngredient).get(getIngredients);
 router.route('/:id').get(getIngredientById).put(updateIngredient).delete(deleteIngredient);
 
 export default router;

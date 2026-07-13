@@ -10,6 +10,9 @@ import authRoutes from './routes/authRoutes.js';
 import ingredientRoutes from './routes/ingredientRoutes.js';
 import supplierRoutes from './routes/supplierRoutes.js';
 import stockRoutes from './routes/stockRoutes.js';
+import modifierRoutes from './routes/modifierRoutes.js';
+import modifierGroupRoutes from './routes/modifierGroupRoutes.js';
+import productRoutes from './routes/productRoutes.js';
 
 const app = express();
 
@@ -29,6 +32,9 @@ app.use('/api/auth', authRoutes);
 app.use('/api/ingredients', ingredientRoutes);
 app.use('/api/suppliers', supplierRoutes);
 app.use('/api/stocks', stockRoutes);
+app.use('/api/modifiers', modifierRoutes);
+app.use('/api/modifier-groups', modifierGroupRoutes);
+app.use('/api/products', productRoutes);
 app.use(notFound);
 app.use(errorHandler);
 

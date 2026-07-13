@@ -1,6 +1,6 @@
 import express from "express";
 import {
-    createSuppliers,
+    createSupplier,
     getSuppliers,
     getSuppliersById,
     updateSupplier,
@@ -12,7 +12,7 @@ const router = express.Router();
 
 router.use(protect, authorize('admin'));
 
-router.route('/').post(createSuppliers).get(getSuppliers);
+router.route('/').post(createSupplier).get(getSuppliers);
 router.route('/:id').get(getSuppliersById).put(updateSupplier).delete(deleteSupplier);
 
 export default router;
