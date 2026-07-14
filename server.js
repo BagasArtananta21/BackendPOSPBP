@@ -14,6 +14,7 @@ import modifierRoutes from './routes/modifierRoutes.js';
 import modifierGroupRoutes from './routes/modifierGroupRoutes.js';
 import productRoutes from './routes/productRoutes.js';
 import shiftRoutes from './routes/shiftRoutes.js';
+import cashflow from './routes/cashflowRoutes.js';
 
 const app = express();
 
@@ -37,6 +38,7 @@ app.use('/api/modifiers', modifierRoutes);
 app.use('/api/modifier-groups', modifierGroupRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/shift', shiftRoutes);
+app.use('/api/cashflow', cashflow);
 app.use(notFound);
 app.use(errorHandler);
 
