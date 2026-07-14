@@ -16,6 +16,7 @@ import productRoutes from './routes/productRoutes.js';
 import shiftRoutes from './routes/shiftRoutes.js';
 import cashflow from './routes/cashflowRoutes.js';
 import transactionRoutes from './routes/transactionRoutes.js';
+import userManageRoutes from './routes/userManageRoutes.js';
 
 const app = express();
 
@@ -41,6 +42,7 @@ app.use('/api/products', productRoutes);
 app.use('/api/shift', shiftRoutes);
 app.use('/api/cashflow', cashflow);
 app.use('/api/transactions', transactionRoutes);
+app.use('/api/users', userManageRoutes);
 app.use(notFound);
 app.use(errorHandler);
 
