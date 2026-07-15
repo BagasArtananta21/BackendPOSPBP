@@ -24,6 +24,10 @@ export const login = async (req, res) => {
   });
 };
 
+export const logout = async (req, res) => {
+  res.json({ message: 'Logout berhasil' });
+}
+
 export const getMe = async (req, res) => {
   res.json({user: req.user});
 };
