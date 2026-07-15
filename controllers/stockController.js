@@ -1,6 +1,5 @@
 import Stock from '../models/Stock.js';
-// import Ingredient from '../models/Ingredient.js';
-// import User from '../models/User.js';
+import Ingredient from '../models/Ingredient.js';
 
 export const supplyIn = async (req, res) => {
     const { ingredient_id, supplier_id, quantity, total_price, batch_number } = req.body;
@@ -23,7 +22,6 @@ export const supplyIn = async (req, res) => {
         recorded_by: req.user._id,        
     });
 
-    //update saldo & harga modal terkini di Ingredient
     ingredient.current_stock += quantity;
     if (cost_per_unit) ingredient.last_cost_per_unit = cost_per_unit;
     await ingredient.save();

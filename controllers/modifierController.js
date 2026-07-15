@@ -19,7 +19,7 @@ export const getModifiers = async (req, res) => {
     if (search) filter.modifier_name = {$regex: search, $options: 'i'};
 
     const modifiers = await Modifier.find(filter)
-    .populate('group_id', 'group_name selected_type is_required')
+    .populate('group_id', 'group_name selection_type is_required')
     .populate('recipe.ingredient_id', 'ingredient_name sku unit')
     .sort({modifier_name: 1});
     res.json({ message: 'Modifier berhasil diambil', data: modifiers });
@@ -27,7 +27,7 @@ export const getModifiers = async (req, res) => {
 
 export const getModifierById = async (req, res) => {
     const modifier = await Modifier.findOne({_id: req.params.id, is_deleted: false})
-    .populate('group_id', 'group_name selected_type is_required')
+    .populate('group_id', 'group_name selection_type is_required')
     .populate('recipe.ingredient_id', 'ingredient_name sku unit');
     if (!modifier) return res.status(404).json({message: 'Modifier Tidak Ditemukan'});
     res.json({ message: 'Modifier berhasil diambil', data: modifier });

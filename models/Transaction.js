@@ -6,10 +6,10 @@ const transactionSchema = new mongoose.Schema(
         cashier_id: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true},
         shift_id: {type: mongoose.Schema.Types.ObjectId, ref: 'Shift', required: true},
         payment_method: {type: String, enum: ['cash', 'qris'], required: true},
-        subtotal: {type: Number, required: true, min: 0},          // sebelum pajak
-        tax_rate: {type: Number, required: true, min: 0, default: 0.11},  // snapshot tarif
-        tax_amount: {type: Number, required: true, min: 0},          // nominal pajak
-        total_amount: {type: Number, required: true, min: 0},          // subtotal + pajak
+        subtotal: {type: Number, required: true, min: 0},          
+        tax_rate: {type: Number, required: true, min: 0, default: 0.11},  
+        tax_amount: {type: Number, required: true, min: 0},          
+        total_amount: {type: Number, required: true, min: 0},          
 
         status: {type: String, enum: ['success', 'voided'], default: 'success'},
 
