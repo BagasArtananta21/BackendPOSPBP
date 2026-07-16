@@ -32,7 +32,7 @@ export const getCashflow = async (req, res) => {
         status: 'active',
     });
     if (!shift) {
-        return res.status(409).json({ message: 'Tidak ada shift aktif.' });
+        return res.status(400).json({ message: 'Tidak ada shift aktif.' });
     }
 
     const entries = await Cashflow.find({ shift_id: shift._id }).sort({ created_at: -1 });
