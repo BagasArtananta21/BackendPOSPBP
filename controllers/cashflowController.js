@@ -9,7 +9,7 @@ export const createCashflow = async (req, res) => {
         status: 'active',
     });
     if (!shift) {
-        return res.status(409).json({ message: 'Tidak ada shift aktif. Buka shift dulu.' });
+        return res.status(400).json({ message: 'Tidak ada shift aktif. Buka shift dulu.' });
     }
 
     const entry = await Cashflow.create({

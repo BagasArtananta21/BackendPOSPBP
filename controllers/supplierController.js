@@ -47,7 +47,7 @@ export const updateSupplier = async (req, res) => {
 }
 
 export const deleteSupplier = async (req, res) => {
-    const supplliers = await Supplier.findByIdAndDelete(req.params.id);
-    if (!supplliers) return res.status(404).json({message: 'Supplier Tidak Ditemukan'});
-    res.json({ message: 'Supplier berhasil dihapus', data: supplliers });
+    const suppliers = await Supplier.findByIdAndDelete(req.params.id);
+    if (!suppliers) return res.status(404).json({message: 'Supplier Tidak Ditemukan'});
+    res.json({ message: 'Supplier berhasil dihapus', data: suppliers });
 }

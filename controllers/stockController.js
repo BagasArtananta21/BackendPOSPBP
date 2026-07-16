@@ -130,7 +130,5 @@ export const deleteStock = async (req,res) => {
         { _id: stock.ingredient_id },
         { $inc: { current_stock: -stock.quantity_changed } }
     );
-
-    await Stock.deleteOne();
     res.json({ message: 'Data stok berhasil dihapus', data: stock });
 }
