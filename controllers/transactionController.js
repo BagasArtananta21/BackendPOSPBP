@@ -13,7 +13,7 @@ const generateInvoiceNumber = async (sequenceName) => {
     const counter = await Counter.findOneAndUpdate(
         {_id: 'invoice'},
         {$inc: {seq: 1}},
-        {new: true, upsert: true}
+        {returnDocument: 'after', upsert: true}
     );
     const now = new Date();
     const year = now.getFullYear();
@@ -32,7 +32,7 @@ export const createTransaction = async (req, res) => {
 
     const shift = await Shift.findOne({cashier_id: req.user._id, status: 'active',});
     if (!shift) {
-        return res.status(409).json({ message: 'Tidak ada shift aktif. Buka shift dulu.' });
+        return res.status(400).json({ message: 'Tidak ada shift aktif. Buka shift dulu.' });
     }
 
     const needMap = new Map();

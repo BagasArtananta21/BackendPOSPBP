@@ -2,7 +2,6 @@ import Ingredient from "../models/Ingredient.js";
 import TransactionDetail from "../models/TransactionDetail.js";
 import Transaction from "../models/Transaction.js";
 import Shift from "../models/Shift.js";
-import { set } from "mongoose";
 
 export const getTodayRange = () => {
     const start = new Date(); start.setHours(0, 0, 0, 0);
@@ -51,10 +50,11 @@ export const getActiveCashiers = async (req, res) => {
 }
 
 export const getRecentTransactions = async (req, res) => {
+    const limit = Math.max(1, parseInt(req.query.limit) || 5);
     const transactions = await Transaction.find()
         .populate('cashier_id', 'name')
         .sort({ created_at: -1 })
-        .limit(10);
+        .limit(limit);
     res.json({ data: transactions });
 }
 
@@ -66,7 +66,8 @@ export const getSalesTrend = async (req, res) => {
         {$group: {
             _id: {$hour: {date: '$created_at', timezone: 'Asia/Jakarta'}},
             total_sales: {$sum: '$total_amount'},
-        }}
+        }},
+        {$sort: {_id: 1}},
     ]);
     res.json({ data: trend });
 }
