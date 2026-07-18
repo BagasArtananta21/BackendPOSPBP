@@ -3,20 +3,27 @@ import Transaction from "../models/Transaction.js";
 import User from "../models/User.js";
 
 export const getStaffReport = async (req, res) => {
-    const match = {};
+    const txnMatch = {};
+    const shiftMatch = {};
+
     if (req.query.from_date || req.query.to_date) {
-        match.created_at = {};
+        const dateFilter = {};
+
         if (req.query.from_date) {
-            const f = new Date(req.query.from_date); f.setHours(0, 0, 0, 0);
-            match.created_at.$gte = f;
+            const f = new Date(req.query.from_date); 
+            f.setHours(0, 0, 0, 0);
+            dateFilter.$gte = f;
         }
         if (req.query.to_date) {
-            const t = new Date(req.query.to_date); t.setHours(23, 59, 59, 999);
-            match.created_at.$lte = t;
+            const t = new Date(req.query.to_date); 
+            t.setHours(23, 59, 59, 999);
+            dateFilter.$lte = t;
         }
+        txnMatch.created_at = dateFilter;
+        shiftMatch.start_time = dateFilter;
     };
     const txnStats = await Transaction.aggregate([
-        { $match: match },
+        { $match: txnMatch },
         {$group: {
             _id: '$cashier_id',
             total_sales:  { $sum: { $cond: [{ $eq: ['$status', 'success'] }, '$total_amount', 0] } },
@@ -26,7 +33,7 @@ export const getStaffReport = async (req, res) => {
     ]);
 
     const shiftStats = await Shift.aggregate([
-        { $match: match },
+        { $match: shiftMatch },
         {$group: {
             _id: '$cashier_id',
             shift_count: { $sum: 1 },
