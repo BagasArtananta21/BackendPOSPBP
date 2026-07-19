@@ -3,7 +3,8 @@ import {
     createTransaction,
     getTransactions,
     getTransactionById,
-    voidTransaction
+    voidTransaction,
+    getTransactionQris
 } from '../controllers/transactionController.js';
 import {protect, authorize} from '../middleware/auth.js';
 
@@ -13,4 +14,6 @@ router.use(protect, authorize('cashier'));
 router.route('/').post(createTransaction).get(getTransactions);
 router.route('/:id').get(getTransactionById);
 router.route('/:id/void').patch(voidTransaction);
+router.route('/:id/qris').get(getTransactionQris);
+
 export default router;

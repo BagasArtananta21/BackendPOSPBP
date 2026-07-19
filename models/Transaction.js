@@ -11,7 +11,7 @@ const transactionSchema = new mongoose.Schema(
         tax_amount: {type: Number, required: true, min: 0},          
         total_amount: {type: Number, required: true, min: 0},          
 
-        status: {type: String, enum: ['success', 'voided'], default: 'success'},
+        status: {type: String, enum: ['pending' ,'success', 'voided'], default: 'success'},
 
         voided_by: {type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null},
         voided_at: {type: Date, default: null},
