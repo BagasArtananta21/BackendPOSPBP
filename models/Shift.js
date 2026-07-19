@@ -13,6 +13,7 @@ const shiftSchema = new mongoose.Schema(
         variance: {type: Number, default: null},
         start_time: {type: Date, required: true, default: Date.now},
         end_time: {type: Date, default: null},
+            extended_hours: { type: Number, default: 0 },
         status: {type: String, enum: ['active', 'closed'], required: true, default: 'active'}
     },
 )
