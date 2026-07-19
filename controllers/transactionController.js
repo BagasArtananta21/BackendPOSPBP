@@ -40,7 +40,7 @@ export const createTransaction = async (req, res) => {
     let subtotal_all = 0;
 
     for (const item of items){
-        const {product_id, quantity, modifiers = []} = item;
+        const {product_id, quantity, modifiers = [], note = ""} = item;
 
         if (!Number.isInteger(quantity) || quantity <= 0){
             return res.status(400).json({ message: 'Quantity harus bilangan bulat positif' });
@@ -93,6 +93,7 @@ export const createTransaction = async (req, res) => {
             })),
             subtotal,
             snapshot_cogs: cogs_per_unit * quantity,
+            note,
         });
     }
 

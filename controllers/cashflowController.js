@@ -1,4 +1,4 @@
-import Cashflow from "../models/Cashflow.js";
+import Cashflow from "../models/cashflow.js";
 import Shift from "../models/Shift.js";
 
 export const createCashflow = async (req, res) => {
