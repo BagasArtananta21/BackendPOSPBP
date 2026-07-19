@@ -6,6 +6,7 @@ import Modifier from "../models/Modifier.js";
 import Ingredient from "../models/Ingredient.js";
 import Stock from "../models/Stock.js";
 import Shift from "../models/Shift.js";
+import QRCode from "qrcode";
 
 const taxRate = 0.11;
 
@@ -115,6 +116,7 @@ export const createTransaction = async (req, res) => {
 
     const tax_amount = Math.round(subtotal_all * taxRate);
     const total_amount = subtotal_all + tax_amount;
+    const isQris = payment_method === 'qris';
 
     const transaction = await Transaction.create({
         invoice_number,
@@ -125,6 +127,7 @@ export const createTransaction = async (req, res) => {
         tax_rate: taxRate,
         tax_amount,
         total_amount,
+        status: isQris ? 'pending' : 'success',
     });
 
     const details = await TransactionDetail.insertMany(
@@ -143,8 +146,9 @@ export const createTransaction = async (req, res) => {
         await Ingredient.updateOne({_id: ingredient._id}, {$inc: {current_stock: -needed} })
     }
 
-    const salesField = payment_method === 'cash' ? 'total_cash_sales' : 'total_qris_sales';
-    await Shift.updateOne({ _id: shift._id }, { $inc: { [salesField]: total_amount } });
+    if (!isQris){
+        await Shift.updateOne({ _id: shift._id }, { $inc: { total_cash_sales: total_amount } });
+    }
 
     res.json({ message: 'Transaksi berhasil dicatat', data: { transaction, details } });
 }
@@ -213,8 +217,10 @@ export const voidTransaction = async (req, res) => {
         await Ingredient.updateOne({_id: entry.ingredient_id}, {$inc: {current_stock: reverseStock}});
     }
 
-    const salesField = transaction.payment_method === 'cash' ? 'total_cash_sales' : 'total_qris_sales';
-    await Shift.updateOne({ _id: shift._id }, { $inc: { [salesField]: -transaction.total_amount } });
+    if (transaction.status === 'success') {
+        const salesField = transaction.payment_method === 'cash' ? 'total_cash_sales' : 'total_qris_sales';
+        await Shift.updateOne({ _id: shift._id }, { $inc: { [salesField]: -transaction.total_amount } });
+    }
 
     transaction.status = 'voided';
     transaction.voided_by = req.user._id;
@@ -224,3 +230,26 @@ export const voidTransaction = async (req, res) => {
 
     res.json({ message: 'Transaksi berhasil di-void', data: transaction });
 }
+
+export const getTransactionQris = async (req, res) => {
+    const transaction = await Transaction.findById(req.params.id);
+    if (!transaction) return res.status(404).json({ message: 'Transaksi tidak ditemukan' });
+    if (transaction.payment_method !== 'qris') {
+        return res.status(400).json({ message: 'Transaksi ini bukan pembayaran QRIS' });
+    }
+
+    const baseUrl = `${req.protocol}://${req.get('host')}`;
+    const payUrl = `${baseUrl}/pay/${transaction._id}`;      
+    const qr_image = await QRCode.toDataURL(payUrl, { width: 400, margin: 1 });
+
+    res.json({
+        message: 'QRIS berhasil dibuat',
+        data: {
+            invoice_number: transaction.invoice_number,
+            total_amount: transaction.total_amount,
+            status: transaction.status,
+            pay_url: payUrl,
+            qr_image,
+        },
+    });
+};

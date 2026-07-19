@@ -27,10 +27,14 @@ import dashboardRoutes from './routes/dashboardRoutes.js';
 import staffReportRouter from './routes/staffReportRoutes.js';
 import transactionDetailReportRoutes from './routes/transactionDetailReportRoutes.js';
 import mobileProductRoutes from "./routes/mobile/productRoutes.js";
+import paymentRoutes from "./routes/paymentRoutes.js";
 
 const app = express();
 
-app.use(helmet());
+app.use(helmet({
+    contentSecurityPolicy: false,   
+    hsts: false,                    
+}));
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -57,6 +61,7 @@ app.use('/api/users', userManageRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/staff-reports', staffReportRouter);
 app.use('/api/transaction-reports', transactionDetailReportRoutes);
+app.use('/pay', paymentRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
