@@ -5,9 +5,11 @@ import ModifierGroup from "../../models/ModifierGroup.js";
 export const getProductCustomization = async (req, res) => {
     try {
         const { id } = req.params;
+
+        // FIX: Added 'modifier_groups' to the select query so the backend can actually read it
         const product = await Product.findById(id)
             .select(
-                "_id product_name category price image_url is_available"
+                "_id product_name category price image_url is_available modifier_groups"
             )
             .lean();
 
@@ -17,6 +19,7 @@ export const getProductCustomization = async (req, res) => {
                 message: "Produk tidak ditemukan"
             });
         }
+
         const groups = await ModifierGroup.find({
             _id: {
                 $in: product.modifier_groups
@@ -25,6 +28,7 @@ export const getProductCustomization = async (req, res) => {
         }).lean();
 
         const groupIds = groups.map(g => g._id);
+
         const modifiers = await Modifier.find({
             group_id: {
                 $in: groupIds
@@ -51,7 +55,6 @@ export const getProductCustomization = async (req, res) => {
                 modifierGroups
             }
         });
-
     } catch (err) {
         return res.status(500).json({
             success: false,
